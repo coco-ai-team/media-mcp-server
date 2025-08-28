@@ -1,6 +1,6 @@
 {
   "name": "@cocosoft/media-mcp-server",
-  "version": "1.0.0-beta.4",
+  "version": "1.0.0-beta.5",
   "author": "Coco AI Team (https://github.com/coco-ai-team)",
   "type": "module",
   "scripts": {

@@ -1,5 +1,5 @@
 import MCPServer from './server.js'
-import { ConcatVideoTool } from './tools.js'
+import { ConcatVideoTool, HelloWorldTool } from './tools.js'
 
 export default async function MCPServerFactory(name: string, version: string) {
   return () =>
@@ -8,6 +8,6 @@ export default async function MCPServerFactory(name: string, version: string) {
         name,
         version,
       },
-      [new ConcatVideoTool()],
+      [new ConcatVideoTool(), new HelloWorldTool()],
     )
 }
