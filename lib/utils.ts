@@ -5,6 +5,10 @@ import ffmpeg from 'fluent-ffmpeg'
 import os from 'node:os'
 import { randomUUID } from 'node:crypto'
 
+import ffmpegStatic from 'ffmpeg-ffprobe-static'
+ffmpeg.setFfmpegPath(ffmpegStatic.ffmpegPath as string)
+ffmpeg.setFfprobePath(ffmpegStatic.ffprobePath as string)
+
 export async function concatVideos(
   input: {
     url: string
