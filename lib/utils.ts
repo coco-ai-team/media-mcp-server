@@ -25,20 +25,19 @@ export async function concatVideos(
       input.map(async (video) => await downloadFile(video.url)),
     )
 
-    trimmedFiles = await Promise.all(
-      files.map(
-        async (file, i) =>
-          await trimVideo({
-            input: file,
-            trimStart: input[i].trimStart,
-            trimEnd: input[i].trimEnd,
-          }),
-      ),
-    )
+    const trimmedFiles: string[] = []
+    for (let i = 0; i < files.length; i++) {
+      const trimmedFile = await trimVideo({
+        input: files[i],
+        trimStart: input[i].trimStart,
+        trimEnd: input[i].trimEnd,
+      })
+      trimmedFiles.push(trimmedFile)
+    }
+
     output = await _concatVideos(trimmedFiles)
     return output
   } catch (err) {
-    console.error(err)
     throw err
   } finally {
     files.forEach(fs.unlinkSync)
@@ -68,7 +67,7 @@ export async function downloadFile(url: string): Promise<string> {
     return tempFilePath
   } catch (err) {
     writer.destroy()
-    throw err
+    throw new Error(`Failed to download ${url}, ${err}`)
   }
 }
 
@@ -76,7 +75,11 @@ function getVideoDuration(filepath: string): Promise<number> {
   return new Promise((resolve, reject) => {
     ffmpeg.ffprobe(filepath, (err, metadata) => {
       if (err) {
-        reject(err)
+        reject(
+          new Error(
+            `Failed to get video duration, filepath=${filepath}, err=${err}`,
+          ),
+        )
       } else {
         resolve(metadata.format.duration as number)
       }
@@ -113,12 +116,23 @@ function trimVideo({
     ffmpeg(input)
       .seekInput(startTime)
       .duration(trimmedDuration)
+      .outputOption([
+        '-threads 1',           // 限制线程数为1
+        '-preset ultrafast',    // 使用最快预设，降低CPU使用
+        '-crf 23',             // 合理的质量，平衡文件大小和质量
+        '-movflags +faststart', // 优化播放
+        '-avoid_negative_ts make_zero', // 避免负时间戳
+      ])
       .output(output)
       .on('end', () => {
         resolve(output)
       })
       .on('error', (err) => {
-        reject(err)
+        reject(
+          new Error(
+            `Failed to trim video, input=${input}, trimStart=${trimStart}, trimEnd=${trimEnd}, err=${err}`,
+          ),
+        )
       })
       .run()
   })
@@ -145,7 +159,11 @@ async function _concatVideos(inputs: string[]): Promise<string> {
       })
       .on('error', (err) => {
         fs.unlinkSync(tempFile)
-        reject(err)
+        reject(
+          new Error(
+            `Failed to concat videos, inputs=${JSON.stringify(inputs)}, err=${err}`,
+          ),
+        )
       })
       .run()
   })

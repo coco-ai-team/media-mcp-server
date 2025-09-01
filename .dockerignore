@@ -1,5 +1,7 @@
 .git
 .vscode
-data
-node_modules
 dist
+node_modules
+.gitignore
+.prettierrc
+LICENSE

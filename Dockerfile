@@ -1,15 +1,13 @@
-FROM node:20
+ARG ARCH=amd64
+
+FROM hxxyyyang/node-ffmpeg:${ARCH}
 
 WORKDIR /app
 
-RUN apt update \
-  && apt install -y ffmpeg \
-  && apt autoremove -y \
-  && apt clean \
-  && rm -rf /var/lib/apt/lists/*
+COPY . .
 
-COPY ./ ./
-
-RUN npm i && npm run build
+RUN npm ci && \
+    npm run build && \
+    npm cache clean --force
 
 ENTRYPOINT ["node", "dist/index.js"]

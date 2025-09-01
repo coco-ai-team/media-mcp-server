@@ -1,6 +1,6 @@
 {
   "name": "@cocosoft/media-mcp-server",
-  "version": "1.0.0-beta.14",
+  "version": "1.0.0-beta.20",
   "author": "Coco AI Team (https://github.com/coco-ai-team)",
   "type": "module",
   "scripts": {
@@ -8,7 +8,9 @@
     "build:debug": "tsc --sourcemap",
     "start": "node dist/index.js",
     "start:sse": "node dist/index.js --sse",
-    "docker:build": "docker build -t media-mcp-server ."
+    "docker:build": "docker build --platform linux/amd64 --build-arg ARCH=amd64 -t hxxyyyang/media-mcp-server:$npm_package_version .",
+    "docker:push": "docker push hxxyyyang/media-mcp-server:$npm_package_version",
+    "docker:build:arm64": "docker build --platform linux/arm64 --build-arg ARCH=arm64 -t media-mcp-server:arm64 ."
   },
   "publishConfig": {
     "access": "public"

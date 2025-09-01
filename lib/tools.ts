@@ -7,26 +7,6 @@ import { concatVideos } from './utils.js'
 import { uploadFile } from './storage.js'
 import fs from 'node:fs'
 
-export class HelloWorldTool implements MCPTool {
-  getName(): string {
-    return 'helloWorld'
-  }
-
-  getDescription(): string {
-    return 'Say hello to the world.'
-  }
-
-  getInputSchema(): { [key: string]: unknown } {
-    return {}
-  }
-
-  async execute(request: CallToolRequest): Promise<CallToolResult> {
-    return {
-      content: [{ type: 'text', text: 'Hello, world!' }],
-    }
-  }
-}
-
 export class ConcatVideoTool implements MCPTool {
   getName(): string {
     return 'concatVideo'
