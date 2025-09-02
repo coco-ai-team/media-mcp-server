@@ -1,6 +1,6 @@
 ARG ARCH=amd64
 
-FROM hxxyyyang/node-ffmpeg:${ARCH}
+FROM jimone5499/node-ffmpeg:${ARCH}
 
 WORKDIR /app
 
