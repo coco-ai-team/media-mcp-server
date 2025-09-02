@@ -117,11 +117,10 @@ function trimVideo({
       .seekInput(startTime)
       .duration(trimmedDuration)
       .outputOption([
-        '-threads 1', // 限制线程数为1
-        '-preset ultrafast', // 使用最快预设，降低CPU使用
-        '-crf 23', // 合理的质量，平衡文件大小和质量
-        '-movflags +faststart', // 优化播放
-        '-avoid_negative_ts make_zero', // 避免负时间戳
+        '-preset veryfast',
+        '-crf 23',
+        '-movflags +faststart',
+        '-avoid_negative_ts make_zero',
       ])
       .output(output)
       .on('end', () => {
