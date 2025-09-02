@@ -58,9 +58,16 @@ export class ConcatVideoTool implements MCPTool {
       }[]
     }
 
-    const output = await concatVideos(args.videos)
-    const url = await uploadFile(output)
-    fs.unlinkSync(output)
+    let output: string = ''
+    let url: string = ''
+    try {
+      output = await concatVideos(args.videos)
+      url = await uploadFile(output)
+    } finally {
+      if (output) {
+        fs.unlinkSync(output)
+      }
+    }
 
     return {
       content: [

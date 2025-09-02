@@ -1,6 +1,6 @@
 {
   "name": "@cocosoft/media-mcp-server",
-  "version": "1.0.0-beta.20",
+  "version": "1.0.0-beta.28",
   "author": "Coco AI Team (https://github.com/coco-ai-team)",
   "type": "module",
   "scripts": {
@@ -33,6 +33,7 @@
     "ffmpeg-ffprobe-static": "6.1.2-rc.1",
     "fluent-ffmpeg": "^2.1.3",
     "json-schema-to-zod": "^2.6.1",
+    "p-limit": "^7.1.1",
     "zod": "^3.25.56"
   },
   "devDependencies": {
